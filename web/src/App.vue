@@ -3,20 +3,24 @@ import { RouterView } from 'vue-router';
 </script>
 
 <template>
-	<RouterView />
+	<div id="app">
+		<RouterView />
+	</div>
 </template>
 
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
+<style lang="scss">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// 引入初始化样式
+#app {
+	background: #eee;
+	height: 100vh;
+	overflow: hidden;
+	font-weight: 400 !important;
 }
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
+.el-button {
+	font-weight: 400 !important;
 }
 </style>
