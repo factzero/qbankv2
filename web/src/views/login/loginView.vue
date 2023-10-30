@@ -35,20 +35,21 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
+import { useUserStore } from '../../stores/user';
 
 const ruleFormRef = ref<FormInstance>();
 
 const checkUsername = (rule: any, value: any, callback: any) => {
-	if (value === '') {
-		callback(new Error('Please input the username'));
+	if (value.length < 5) {
+		return callback(new Error('请输入正确的用户名'));
 	} else {
 		callback();
 	}
 };
 
 const validatePassword = (rule: any, value: any, callback: any) => {
-	if (value === '') {
-		callback(new Error('Please input the password'));
+	if (value.length < 6) {
+		return callback(new Error('请输入正确的密码'));
 	} else {
 		callback();
 	}
@@ -64,11 +65,14 @@ const rules = reactive<FormRules<typeof ruleForm>>({
 	password: [{ validator: validatePassword, trigger: 'blur' }],
 });
 
+const userStore = useUserStore();
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate((valid) => {
 		if (valid) {
 			console.log('submit!');
+			const flag = userStore.LoginIn(ruleForm);
+			console.log('submit!', flag);
 		} else {
 			console.log('error submit!');
 			return false;
@@ -76,3 +80,4 @@ const submitForm = (formEl: FormInstance | undefined) => {
 	});
 };
 </script>
+../../stores/user

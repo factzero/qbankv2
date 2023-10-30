@@ -13,7 +13,7 @@ import { RouterView } from 'vue-router';
 @tailwind components;
 @tailwind utilities;
 
-// ÒıÈë³õÊ¼»¯ÑùÊ½
+// å¼•å…¥åˆå§‹åŒ–æ ·å¼
 #app {
 	background: #eee;
 	height: 100vh;
