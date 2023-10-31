@@ -2,11 +2,13 @@ package user
 
 import (
 	"encoding/json"
+	"gozero/dbmodel"
 	"gozero/route/middleware"
 	"gozero/utils"
 	"gozero/utils/results"
 	"io"
 	"reflect"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -35,11 +37,29 @@ func (api *Index) Login(c *gin.Context) {
 		results.Failed(c, "请提交用户账号或密码！", nil)
 		return
 	}
+	username := parameter["username"].(string)
+	password := parameter["password"].(string)
+	res, err := dbmodel.DB().Table("admin_user").Fields("id,password").Where("username", username).OrWhere("email", username).First()
+	if res == nil || err != nil {
+		results.Failed(c, "账号不存在！", nil)
+		return
+	}
+	if password != res["password"] {
+		results.Failed(c, "您输入的密码不正确！", password)
+		return
+	}
 	// token
 	token := middleware.GenerateToken(&middleware.UserClaims{
-		ID:             13413413,
+		ID:             res["id"].(int64),
 		StandardClaims: jwt.StandardClaims{},
 	})
+
+	// 登录日志
+	dbmodel.DB().Table("admin_user").Where("id", res["id"]).
+		Data(map[string]interface{}{"lastLoginTime": time.Now(), "lastLoginIp": utils.GetRealIP(c)}).Update()
+	dbmodel.DB().Table("login_logs").
+		Data(map[string]interface{}{"uid": res["id"], "out_in": "in",
+			"createtime": time.Now(), "loginIP": utils.GetRealIP(c)}).Insert()
 
 	results.Success(c, "登录成功返回token！", token, nil)
 }
