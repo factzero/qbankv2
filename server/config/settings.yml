@@ -13,6 +13,31 @@ dbconf:
     database: gozero_base
     # 数据表前缀
     prefix: 
+app:
+     # 版本号
+     version: 0.0.1
+     # 环境状态：dev=开发，pro=生产
+     env: dev
+     # 运行服务端口（根据您的实际情况修改）
+     port: 8105
+     # 接口合法性验证
+     apisecret: gozero@9999
+     # 接口JWT验证、跨域域名-不添加请求时报403 (开发、部署必改)
+     allowurl:
+     # token超时时间单位分钟 
+     tokenouttime: 10 
+     # 调用cpu个数
+     cpunum: 3
+     # Gin 框架在运行的时候默认是debug模式 有： 开发：debug，生产：release，测试模式：test
+     runlogtype: debug
+     #不需要token-根模块
+     noVerifyTokenRoot: 
+     # 不需要api接口合法性验证-根模块md5加密
+     noVerifyAPIRoot:
+     # 不需要验证token-具体请求路径
+     noVerifyToken: /admin/user/login,/admin/user/logout
+     # 不需要接口合法性-具体请求路径
+     noVerifyAPI:
 log:
     # 日志等级debug
     level: info  

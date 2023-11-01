@@ -15,16 +15,17 @@ export const useUserStore = defineStore('user', () => {
 	};
 
 	/* 登录*/
-	const LoginIn = (loginInfo) => {
-		try {
-			const res = login(loginInfo);
-			if (res.code === 0) {
-				setUserInfo(res.data.user);
-				return true;
-			}
-		} catch (e) {
-			console.log(e);
-		}
+	const LoginIn = (loginData) => {
+		return new Promise((resolve, reject) => {
+			login(loginData)
+				.then((respone) => {
+					setUserInfo(respone.data.user);
+					resolve(respone.data.token);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	};
 
 	return { LoginIn };

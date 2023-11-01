@@ -12,7 +12,10 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
     "element-plus": "^2.4.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
     "pinia": "^2.1.7",
     "vue": "^3.3.4"
   },

@@ -63,3 +63,20 @@ func (api *Index) Login(c *gin.Context) {
 
 	results.Success(c, "登录成功返回token！", token, nil)
 }
+
+/**
+* 获取用户信息
+**/
+func (api *Index) Get_userinfo(c *gin.Context) {
+	getuser, _ := c.Get("user")
+	user := getuser.(*middleware.UserClaims)
+	userdata, err := dbmodel.DB().Table("admin_user").Fields("id,username,email").Where("id", user.ID).First()
+	if err != nil {
+		results.Failed(c, "获取用户信息失败!", err)
+	} else {
+		results.Success(c, "获取用户信息成功!", map[string]interface{}{
+			"userID": userdata["id"],
+			"username": userdata["username"],
+		}, nil)
+	}
+}

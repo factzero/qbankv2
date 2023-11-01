@@ -1,9 +1,12 @@
 package middleware
 
 import (
+	"gozero/global"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 // 用户信息类，作为生成token的参数
@@ -31,4 +34,74 @@ func GenerateToken(claims *UserClaims) interface{} {
 		panic(err)
 	}
 	return sign
+}
+
+// 更新token
+func RefreshToken(tokenString string) interface{} {
+	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(t *jwt.Token) (interface{}, error) { return secret, nil })
+	if err != nil {
+		panic(err)
+	}
+	claims, ok := token.Claims.(*UserClaims)
+	if !ok {
+		panic("The token is invalid")
+	}
+	jwt.TimeFunc = time.Now
+	claims.StandardClaims.ExpiresAt = time.Now().Add(effectTime).Unix()
+	return GenerateToken(claims)
+}
+
+// 解析token
+func ParseToken(tokenString string) *UserClaims {
+	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(t *jwt.Token) (interface{}, error) { return secret, nil })
+	if err != nil {
+		panic(err)
+	}
+	claims, ok := token.Claims.(*UserClaims)
+	if !ok {
+		panic("The token is invalid")
+	}
+	return claims
+}
+
+// 验证token
+func JwtVerify(c *gin.Context) {
+	//根路径
+	var NoVerifyTokenRoot_arr []string
+	if global.App.Config.App.NoVerifyTokenRoot != "" {
+		NoVerifyTokenRoot_arr = strings.Split(global.App.Config.App.NoVerifyTokenRoot, `,`)
+	} else {
+		NoVerifyTokenRoot_arr = make([]string, 0)
+	}
+	//具体路径
+	var NoVerifyToken_arr []string
+	if global.App.Config.App.NoVerifyToken != "" {
+		NoVerifyToken_arr = strings.Split(global.App.Config.App.NoVerifyToken, `,`)
+	} else {
+		NoVerifyToken_arr = make([]string, 0)
+	}
+	rootPath := strings.Split(c.Request.URL.Path, "/")
+	if len(rootPath) > 2 && IsContain(NoVerifyTokenRoot_arr, rootPath[1]) { //不需要token验证-根路径
+		return
+	} else if IsContain(NoVerifyToken_arr, c.Request.URL.Path) { //不需要token验证-具体路径
+		return
+	}
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.GetHeader("authorization")
+	}
+	if token == "" {
+		panic("token 不存在")
+	}
+	//验证token，并存储在请求中
+	c.Set("user", ParseToken(token))
+}
+
+func IsContain(items []string, item string) bool {
+	for _, eachItem := range items {
+		if eachItem == item {
+			return true
+		}
+	}
+	return false
 }

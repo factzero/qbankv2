@@ -11,15 +11,15 @@
 						<div class="mb-9">
 							<p class="text-center text-4xl font-bold">试题管理系统</p>
 						</div>
-						<el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
+						<el-form ref="loginForm" :model="loginFormData" :rules="rules" Q :validate-on-rule-change="false" @keyup.enter="submitForm">
 							<el-form-item class="mb-6" prop="username">
-								<el-input size="large" v-model="ruleForm.username" placeholder="请输入用户名" suffix-icon="user" />
+								<el-input size="large" v-model="loginFormData.username" placeholder="请输入用户名" suffix-icon="user" />
 							</el-form-item>
 							<el-form-item class="mb-6" prop="password">
-								<el-input size="large" v-model="ruleForm.password" show-password placeholder="请输入密码" />
+								<el-input size="large" v-model="loginFormData.password" show-password placeholder="请输入密码" />
 							</el-form-item>
 							<el-form-item class="mb-6">
-								<el-button class="shadow shadow-blue-600 h-11 w-full" size="large" type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+								<el-button class="shadow shadow-blue-600 h-11 w-full" size="large" type="primary" @click="submitForm">登录</el-button>
 							</el-form-item>
 						</el-form>
 					</div>
@@ -34,13 +34,12 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import type { FormInstance, FormRules } from 'element-plus';
+import type { FormRules, ElMessage } from 'element-plus';
 import { useUserStore } from '../../stores/user';
-
-const ruleFormRef = ref<FormInstance>();
+import router from '@/router/index';
 
 const checkUsername = (rule: any, value: any, callback: any) => {
-	if (value.length < 5) {
+	if (value.length < 4) {
 		return callback(new Error('请输入正确的用户名'));
 	} else {
 		callback();
@@ -48,36 +47,41 @@ const checkUsername = (rule: any, value: any, callback: any) => {
 };
 
 const validatePassword = (rule: any, value: any, callback: any) => {
-	if (value.length < 6) {
+	if (value.length < 4) {
 		return callback(new Error('请输入正确的密码'));
 	} else {
 		callback();
 	}
 };
 
-const ruleForm = reactive({
+const loginForm = ref(null);
+const loginFormData = reactive({
 	username: '',
 	password: '',
 });
 
-const rules = reactive<FormRules<typeof ruleForm>>({
+const rules = reactive<FormRules<typeof loginFormData>>({
 	username: [{ validator: checkUsername, trigger: 'blur' }],
 	password: [{ validator: validatePassword, trigger: 'blur' }],
 });
 
 const userStore = useUserStore();
-const submitForm = (formEl: FormInstance | undefined) => {
-	if (!formEl) return;
-	formEl.validate((valid) => {
-		if (valid) {
+const submitForm = () => {
+	loginForm.value.validate(async (v) => {
+		if (v) {
 			console.log('submit!');
-			const flag = userStore.LoginIn(ruleForm);
-			console.log('submit!', flag);
+			userStore.LoginIn(loginFormData).then(() => {
+				router.push({ path: '/about' });
+				console.log('submitdddd!');
+			});
 		} else {
-			console.log('error submit!');
+			ElMessage({
+				type: 'error',
+				message: '请正确填写登录信息',
+				showClose: true,
+			});
 			return false;
 		}
 	});
 };
 </script>
-../../stores/user
