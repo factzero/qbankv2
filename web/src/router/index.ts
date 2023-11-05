@@ -12,9 +12,20 @@ const routes = [
 		component: () => import('@/views/login/loginView.vue'),
 	},
 	{
-		path: '/about',
-		name: 'About',
-		component: () => import('@/components/HelloWorld.vue'),
+		path: '/home',
+		name: 'Home',
+		component: () => import('@/views/layout/layoutIndex.vue'),
+		children: [
+			{
+				path: '/1',
+				name: '1',
+				meta: {
+					title: '首页',
+					icon: 'ios-list-box',
+				},
+				component: () => import('@/views/dashboard/dashboardIndex.vue'),
+			},
+		],
 	},
 ];
 

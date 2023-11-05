@@ -7,7 +7,7 @@ export const service = axios.create({
 	timeout: 99999,
 });
 
-// http response À¹½ØÆ÷
+// http response æ‹¦æˆªå™¨
 service.interceptors.response.use(
 	(response) => {
 		console.log('111');

@@ -30,7 +30,7 @@ module.exports = {
 	plugins: ['@typescript-eslint', 'vue'],
 	rules: {
 		indent: ['error', 'tab'],
-		'linebreak-style': ['error', 'unix'],
+		'linebreak-style': ['error', 'windows'],
 		quotes: 'off',
 		semi: ['error', 'always'],
 		'@typescript-eslint/no-explicit-any': ['off'],
