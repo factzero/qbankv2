@@ -24,8 +24,8 @@ export default ({ command, mode }) => {
 	};
 
 	const config = {
-		base: './', // index.htmlÎÄ¼þËùÔÚÎ»ÖÃ
-		root: './', // jsµ¼ÈëµÄ×ÊÔ´Â·¾¶£¬src
+		base: './', // index.htmlæ–‡ä»¶æ‰€åœ¨ä½ç½®
+		root: './', // jså¯¼å…¥çš„èµ„æºè·¯å¾„ï¼Œsrc
 		resolve: {
 			alias,
 		},
@@ -33,15 +33,15 @@ export default ({ command, mode }) => {
 			'process.env': {},
 		},
 		server: {
-			// Èç¹ûÊ¹ÓÃdocker-compose¿ª·¢Ä£Ê½£¬ÉèÖÃÎªfalse
+			// å¦‚æžœä½¿ç”¨docker-composeå¼€å‘æ¨¡å¼ï¼Œè®¾ç½®ä¸ºfalse
 			open: true,
 			port: process.env.VITE_APP_PORT,
 			proxy: {
-				// °ÑkeyµÄÂ·¾¶´úÀíµ½targetÎ»ÖÃ
+				// æŠŠkeyçš„è·¯å¾„ä»£ç†åˆ°targetä½ç½®
 				// detail: https://cli.vuejs.org/config/#devserver-proxy
 				[process.env.VITE_BASE_API]: {
-					// ÐèÒª´úÀíµÄÂ·¾¶   ÀýÈç '/api'
-					target: `${process.env.VITE_SERVER_PATH}:${process.env.VITE_SERVER_PORT}/`, // ´úÀíµ½ Ä¿±êÂ·¾¶
+					// éœ€è¦ä»£ç†çš„è·¯å¾„   ä¾‹å¦‚ '/api'
+					target: `${process.env.VITE_SERVER_PATH}:${process.env.VITE_SERVER_PORT}/`, // ä»£ç†åˆ° ç›®æ ‡è·¯å¾„
 					changeOrigin: true,
 					rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_BASE_API), ''),
 				},

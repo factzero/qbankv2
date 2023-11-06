@@ -31,7 +31,7 @@
 <script setup>
 import EchartsLine from '@/views/dashboard/dashboardCharts/echartsLine.vue';
 import DashboardTable from '@/views/dashboard/dashboardTable/dashboardTable.vue';
-import { useWeatherInfo } from '@/views/dashboard/weather.js';
+import { useWeatherInfo } from '@/views/dashboard/weather.ts';
 
 defineOptions({
 	name: 'DashboardIndex',

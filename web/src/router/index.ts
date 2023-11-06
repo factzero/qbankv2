@@ -15,12 +15,16 @@ const routes = [
 		path: '/home',
 		name: 'Home',
 		component: () => import('@/views/layout/layoutIndex.vue'),
+		meta: {
+			title: '首页',
+			icon: 'ios-list-box',
+		},
 		children: [
 			{
 				path: '/1',
 				name: '1',
 				meta: {
-					title: '首页',
+					title: '1',
 					icon: 'ios-list-box',
 				},
 				component: () => import('@/views/dashboard/dashboardIndex.vue'),

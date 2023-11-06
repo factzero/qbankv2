@@ -15,7 +15,7 @@
 
 <script setup>
 import { Commits } from '@/api/github';
-import { formatTimeToStr } from '@/utils/date.js';
+import { formatTimeToStr } from '@/utils/date.ts';
 import { ref } from 'vue';
 
 defineOptions({

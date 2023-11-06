@@ -19,20 +19,17 @@
 					</el-menu-item>
 					<el-sub-menu index="3">
 						<template #title>
-							<el-icon><icon-menu /></el-icon>
+							<el-icon><User /></el-icon>
 							<span>超级管理员</span>
 						</template>
-						<el-menu-item-group title="Group One">
-							<el-menu-item index="3-1">item one</el-menu-item>
-							<el-menu-item index="3-2">item two</el-menu-item>
-						</el-menu-item-group>
-						<el-menu-item-group title="Group Two">
-							<el-menu-item index="3-3">item three</el-menu-item>
-						</el-menu-item-group>
-						<el-sub-menu index="3-4">
-							<template #title>item four</template>
-							<el-menu-item index="3-4-1">item one</el-menu-item>
-						</el-sub-menu>
+						<el-menu-item index="3-11">
+							<el-icon><Coordinate /></el-icon>
+							<span>用户管理</span>
+						</el-menu-item>
+						<el-menu-item index="3-12">
+							<el-icon><pie-chart /></el-icon>
+							<span>操作历史</span>
+						</el-menu-item>
 					</el-sub-menu>
 				</el-menu>
 			</transition>
@@ -41,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Menu as IconMenu, Odometer } from '@element-plus/icons-vue';
+import { Odometer, User, Coordinate, PieChart } from '@element-plus/icons-vue';
 import router from '@/router/index';
 
 defineOptions({
