@@ -13,21 +13,45 @@ const routes = [
 	},
 	{
 		path: '/home',
-		name: 'Home',
+		redirect: '/dashboard',
 		component: () => import('@/views/layout/layoutIndex.vue'),
 		meta: {
-			title: '首页',
-			icon: 'ios-list-box',
+			title: 'home',
 		},
 		children: [
 			{
-				path: '/1',
-				name: '1',
-				meta: {
-					title: '1',
-					icon: 'ios-list-box',
-				},
+				path: '/dashboard',
+				name: 'dashboard',
 				component: () => import('@/views/dashboard/dashboardIndex.vue'),
+				meta: {
+					title: 'dashboard',
+				},
+			},
+			{
+				path: '/superadmin',
+				name: 'superadmin',
+				component: () => import('@/views/superAdmin/superAdminIndex.vue'),
+				meta: {
+					title: 'superadmin',
+				},
+				children: [
+					{
+						path: '/usermanage',
+						name: 'usermanage',
+						component: () => import('@/views/superAdmin/user/userManage.vue'),
+						meta: {
+							title: 'usermanage',
+						},
+					},
+					{
+						path: '/sysoprecord',
+						name: 'sysoprecord',
+						component: () => import('@/views/superAdmin/operation/sysOperationRecord.vue'),
+						meta: {
+							title: 'sysoprecord',
+						},
+					},
+				],
 			},
 		],
 	},

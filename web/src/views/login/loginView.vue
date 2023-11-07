@@ -71,8 +71,7 @@ const submitForm = () => {
 		if (v) {
 			console.log('submit!');
 			userStore.LoginIn(loginFormData).then(() => {
-				router.push({ path: '/about' });
-				console.log('submitdddd!');
+				router.push({ path: '/dashboard' });
 			});
 		} else {
 			ElMessage({

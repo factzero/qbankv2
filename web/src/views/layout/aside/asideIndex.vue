@@ -11,22 +11,22 @@
 					unique-opened
 					@select="selectMenuItem"
 				>
-					<el-menu-item index="1">
+					<el-menu-item index="dashboard">
 						<template #title>
 							<el-icon><Odometer /></el-icon>
 							<span>仪表盘</span>
 						</template>
 					</el-menu-item>
-					<el-sub-menu index="3">
+					<el-sub-menu index="superadmin">
 						<template #title>
 							<el-icon><User /></el-icon>
 							<span>超级管理员</span>
 						</template>
-						<el-menu-item index="3-11">
+						<el-menu-item index="usermanage">
 							<el-icon><Coordinate /></el-icon>
 							<span>用户管理</span>
 						</el-menu-item>
-						<el-menu-item index="3-12">
+						<el-menu-item index="sysoprecord">
 							<el-icon><pie-chart /></el-icon>
 							<span>操作历史</span>
 						</el-menu-item>
