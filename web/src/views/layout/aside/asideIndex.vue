@@ -17,6 +17,20 @@
 							<span>仪表盘</span>
 						</template>
 					</el-menu-item>
+					<el-sub-menu index="questionmanage">
+						<template #title>
+							<el-icon><User /></el-icon>
+							<span>试题管理</span>
+						</template>
+						<el-menu-item index="manualentry">
+							<el-icon><Coordinate /></el-icon>
+							<span>手动录入</span>
+						</el-menu-item>
+						<el-menu-item index="autoentry">
+							<el-icon><pie-chart /></el-icon>
+							<span>自动录入</span>
+						</el-menu-item>
+					</el-sub-menu>
 					<el-sub-menu index="superadmin">
 						<template #title>
 							<el-icon><User /></el-icon>
