@@ -7,5 +7,6 @@ package controller
 * 路由规则：包路径“home/article” + 包中结构体“Cate”转小写+方法名(首字母转小写) 即：http://xx.com/home/article/cate/get_list
  */
 import (
+	_ "gozero/app/admin/managequestion"
 	_ "gozero/app/admin/user"
 )

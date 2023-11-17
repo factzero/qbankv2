@@ -29,7 +29,7 @@ type Index struct {
 * 登录
 **/
 func (api *Index) Login(c *gin.Context) {
-	//获取post传过来的data
+	// 获取post传过来的data
 	body, _ := io.ReadAll(c.Request.Body)
 	var parameter map[string]interface{}
 	_ = json.Unmarshal(body, &parameter)
@@ -75,7 +75,7 @@ func (api *Index) Get_userinfo(c *gin.Context) {
 		results.Failed(c, "获取用户信息失败!", err)
 	} else {
 		results.Success(c, "获取用户信息成功!", map[string]interface{}{
-			"userID": userdata["id"],
+			"userID":   userdata["id"],
 			"username": userdata["username"],
 		}, nil)
 	}

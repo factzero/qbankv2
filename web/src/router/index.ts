@@ -13,7 +13,6 @@ const routes = [
 	},
 	{
 		path: '/home',
-		name: 'home',
 		redirect: '/dashboard',
 		component: () => import('@/views/layout/layoutIndex.vue'),
 		meta: {
@@ -31,7 +30,6 @@ const routes = [
 			{
 				path: '/superadmin',
 				name: 'superadmin',
-				redirect: '/usermanage',
 				component: () => import('@/views/superAdmin/superAdminIndex.vue'),
 				meta: {
 					title: 'superadmin',
@@ -69,6 +67,22 @@ const routes = [
 						component: () => import('@/views/questionManage/manualEntry/manualEntry.vue'),
 						meta: {
 							title: 'manualentry',
+						},
+					},
+					{
+						path: '/autoentry',
+						name: 'autoentry',
+						component: () => import('@/views/questionManage/autoEntry/autoEntry.vue'),
+						meta: {
+							title: 'autoentry',
+						},
+					},
+					{
+						path: '/queryq',
+						name: 'queryq',
+						component: () => import('@/views/questionManage/queryQuestion/queryQuestion.vue'),
+						meta: {
+							title: 'queryq',
 						},
 					},
 				],

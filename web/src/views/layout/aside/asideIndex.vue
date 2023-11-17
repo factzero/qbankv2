@@ -17,6 +17,7 @@
 							<span>仪表盘</span>
 						</template>
 					</el-menu-item>
+
 					<el-sub-menu index="questionmanage">
 						<template #title>
 							<el-icon><User /></el-icon>
@@ -29,6 +30,10 @@
 						<el-menu-item index="autoentry">
 							<el-icon><pie-chart /></el-icon>
 							<span>自动录入</span>
+						</el-menu-item>
+						<el-menu-item index="queryQ">
+							<el-icon><Search /></el-icon>
+							<span>查看</span>
 						</el-menu-item>
 					</el-sub-menu>
 					<el-sub-menu index="superadmin">
@@ -52,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Odometer, User, Coordinate, PieChart } from '@element-plus/icons-vue';
+import { Odometer, User, Coordinate, PieChart, Search } from '@element-plus/icons-vue';
 import router from '@/router/index';
 
 defineOptions({
