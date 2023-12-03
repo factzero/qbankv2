@@ -17,7 +17,18 @@
 							<span>仪表盘</span>
 						</template>
 					</el-menu-item>
-
+					<el-menu-item index="exampapermanage">
+						<template #title>
+							<el-icon><User /></el-icon>
+							<span>试卷管理</span>
+						</template>
+					</el-menu-item>
+					<el-menu-item index="questionsmanage">
+						<template #title>
+							<el-icon><User /></el-icon>
+							<span>题目管理</span>
+						</template>
+					</el-menu-item>
 					<el-sub-menu index="questionmanage">
 						<template #title>
 							<el-icon><User /></el-icon>

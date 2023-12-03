@@ -2,9 +2,6 @@
 	<div>
 		<div class="gva-search-box">
 			<el-form :inline="true" :model="searchInfo">
-				<el-form-item label="题型">
-					<el-input v-model="searchInfo.method" placeholder="搜索条件" />
-				</el-form-item>
 				<el-form-item label="关键字">
 					<el-input v-model="searchInfo.path" placeholder="搜索条件" />
 				</el-form-item>
@@ -12,21 +9,13 @@
 					<el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
 					<el-button icon="refresh" @click="onReset">重置</el-button>
 				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" icon="search" @click="onSubmit">自动组卷</el-button>
+					<el-button type="primary" icon="refresh" @click="onReset">创建试卷</el-button>
+				</el-form-item>
 			</el-form>
 		</div>
 		<div class="gva-table-box">
-			<div class="gva-btn-list">
-				<el-popover v-model="deleteVisible" placement="top" width="160">
-					<p>确定要删除吗？</p>
-					<div style="text-align: right; margin-top: 8px">
-						<el-button type="primary" link @click="deleteVisible = false">取消</el-button>
-						<el-button type="primary" @click="onDelete">确定</el-button>
-					</div>
-					<template #reference>
-						<el-button icon="delete" style="margin-left: 10px" :disabled="!multipleSelection.length" @click="deleteVisible = true">删除</el-button>
-					</template>
-				</el-popover>
-			</div>
 			<el-table
 				ref="multipleTable"
 				:data="tableData"
@@ -36,12 +25,15 @@
 				@selection-change="handleSelectionChange"
 			>
 				<el-table-column align="left" type="selection" width="55" />
-				<el-table-column align="left" label="题型" prop="qtype" width="120" />
-				<el-table-column align="left" label="题干" prop="stem" width="420" />
-				<el-table-column align="left" label="日期" width="180">
+				<el-table-column align="left" label="试卷名称" prop="qtype" width="120" />
+				<el-table-column align="left" label="试卷介绍" prop="stem" width="420" />
+				<el-table-column align="left" label="创建时间" width="180">
 					<template #default="scope">{{ formatDate(scope.row.createtime) }}</template>
 				</el-table-column>
-				<el-table-column align="left" label="操作">
+				<el-table-column align="left" label="修改时间" width="180">
+					<template #default="scope">{{ formatDate(scope.row.updatetime) }}</template>
+				</el-table-column>
+				<el-table-column align="left" label="编辑">
 					<template #default="scope">
 						<el-popover v-model="scope.row.visible" placement="top" width="160">
 							<p>确定要删除吗？</p>
@@ -74,11 +66,9 @@
 <script setup>
 import { formatDate } from '@/utils/format';
 import { ref } from 'vue';
-import { ElMessage } from 'element-plus';
-import { useManageQStore } from '@/stores/managequestion';
 
 defineOptions({
-	name: 'QuestionRecord',
+	name: 'ExamPaperManage',
 });
 
 const page = ref(1);
@@ -111,28 +101,13 @@ const handleCurrentChange = (val) => {
 };
 
 // 查询
-const getTableData = async () => {
-	useManageQStore()
-		.GetQuestions({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
-		.then((res) => {
-			tableData.value = res.data.item;
-			console.log('getTableData:', res);
-		});
-};
+const getTableData = async () => {};
 
 getTableData();
 
-const deleteVisible = ref(false);
 const multipleSelection = ref([]);
 const handleSelectionChange = (val) => {
 	multipleSelection.value = val;
-};
-
-const onDelete = async () => {
-	ElMessage({
-		type: 'success',
-		message: '删除成功',
-	});
 };
 
 const deleteSysOperationRecordFunc = async (row) => {

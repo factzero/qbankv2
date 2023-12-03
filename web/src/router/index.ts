@@ -28,6 +28,22 @@ const routes = [
 				},
 			},
 			{
+				path: '/exampapermanage',
+				name: 'exampapermanage',
+				component: () => import('@/views/exam/examPaperManage.vue'),
+				meta: {
+					title: 'exampapermanage',
+				},
+			},
+			{
+				path: '/questionsmanage',
+				name: 'questionsmanage',
+				component: () => import('@/views/questions/questionsManage.vue'),
+				meta: {
+					title: 'questionsmanage',
+				},
+			},
+			{
 				path: '/superadmin',
 				name: 'superadmin',
 				component: () => import('@/views/superAdmin/superAdminIndex.vue'),

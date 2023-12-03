@@ -2,31 +2,29 @@
 	<div>
 		<div class="gva-search-box">
 			<el-form :inline="true" :model="searchInfo">
-				<el-form-item label="题型">
-					<el-input v-model="searchInfo.method" placeholder="搜索条件" />
+				<el-form-item>
+					<el-select v-model="value" clearable placeholder="题型">
+						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+					</el-select>
 				</el-form-item>
-				<el-form-item label="关键字">
-					<el-input v-model="searchInfo.path" placeholder="搜索条件" />
+				<el-form-item>
+					<el-input v-model="searchInfo.path" placeholder="关键字" />
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
 					<el-button icon="refresh" @click="onReset">重置</el-button>
 				</el-form-item>
+
+				<el-form-item>
+					<el-radio-group v-model="labelPosition" label="label position">
+						<el-radio-button label="left">Left</el-radio-button>
+						<el-radio-button label="right">Right</el-radio-button>
+						<el-radio-button label="top">Top</el-radio-button>
+					</el-radio-group>
+				</el-form-item>
 			</el-form>
 		</div>
 		<div class="gva-table-box">
-			<div class="gva-btn-list">
-				<el-popover v-model="deleteVisible" placement="top" width="160">
-					<p>确定要删除吗？</p>
-					<div style="text-align: right; margin-top: 8px">
-						<el-button type="primary" link @click="deleteVisible = false">取消</el-button>
-						<el-button type="primary" @click="onDelete">确定</el-button>
-					</div>
-					<template #reference>
-						<el-button icon="delete" style="margin-left: 10px" :disabled="!multipleSelection.length" @click="deleteVisible = true">删除</el-button>
-					</template>
-				</el-popover>
-			</div>
 			<el-table
 				ref="multipleTable"
 				:data="tableData"
@@ -38,22 +36,15 @@
 				<el-table-column align="left" type="selection" width="55" />
 				<el-table-column align="left" label="题型" prop="qtype" width="120" />
 				<el-table-column align="left" label="题干" prop="stem" width="420" />
-				<el-table-column align="left" label="日期" width="180">
+				<el-table-column align="left" label="创建时间" width="180">
 					<template #default="scope">{{ formatDate(scope.row.createtime) }}</template>
 				</el-table-column>
-				<el-table-column align="left" label="操作">
-					<template #default="scope">
-						<el-popover v-model="scope.row.visible" placement="top" width="160">
-							<p>确定要删除吗？</p>
-							<div style="text-align: right; margin-top: 8px">
-								<el-button type="primary" link @click="scope.row.visible = false">取消</el-button>
-								<el-button type="primary" @click="deleteSysOperationRecordFunc(scope.row)">确定</el-button>
-							</div>
-							<template #reference>
-								<el-button icon="delete" type="primary" link @click="scope.row.visible = true">删除</el-button>
-							</template>
-						</el-popover>
-					</template>
+				<el-table-column align="left" label="修改时间" width="180">
+					<template #default="scope">{{ formatDate(scope.row.updatetime) }}</template>
+				</el-table-column>
+				<el-table-column align="left" label="编辑">
+					<el-button icon="delete" type="primary" link @click="onDelete" />
+					<el-button icon="edit" type="primary" link @click="onDelete" />
 				</el-table-column>
 			</el-table>
 			<div class="gva-pagination">
@@ -80,6 +71,30 @@ import { useManageQStore } from '@/stores/managequestion';
 defineOptions({
 	name: 'QuestionRecord',
 });
+
+const value = ref('');
+const options = [
+	{
+		value: 'radio',
+		label: '单选题',
+	},
+	{
+		value: 'multiple',
+		label: '多选题',
+	},
+	{
+		value: 'determine',
+		label: '判断题',
+	},
+	{
+		value: 'blanks',
+		label: '填空题',
+	},
+	{
+		value: 'analytic',
+		label: '简答题',
+	},
+];
 
 const page = ref(1);
 const total = ref(0);
@@ -122,7 +137,6 @@ const getTableData = async () => {
 
 getTableData();
 
-const deleteVisible = ref(false);
 const multipleSelection = ref([]);
 const handleSelectionChange = (val) => {
 	multipleSelection.value = val;
@@ -133,10 +147,6 @@ const onDelete = async () => {
 		type: 'success',
 		message: '删除成功',
 	});
-};
-
-const deleteSysOperationRecordFunc = async (row) => {
-	console.log(row);
 };
 </script>
 

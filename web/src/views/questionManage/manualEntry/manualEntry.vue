@@ -2,13 +2,13 @@
 	<div>
 		<div class="gva-table-box">
 			<el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm" :size="formSize" status-icon>
-				<el-form-item label="题干" prop="stem">
-					<el-input v-model="ruleForm.stem" />
-				</el-form-item>
 				<el-form-item label="题型" prop="qtype">
-					<el-select v-model="ruleForm.qtype" placeholder="请选择">
+					<el-select v-model="ruleForm.qtype" placeholder="填空题">
 						<el-option v-for="item in questionType" :label="item.label" :key="item.value" :value="item.value"></el-option>
 					</el-select>
+				</el-form-item>
+				<el-form-item label="题干" prop="stem">
+					<el-input v-model="ruleForm.stem" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<template v-if="['radio', 'multiple'].includes(ruleForm.qtype)">
 					<el-row :gutter="20">
@@ -24,9 +24,9 @@
 								{{ setOptionCfgID(item, index) }}
 							</el-form-item>
 						</el-col>
-						<el-col :span="10">
+						<el-col :span="15">
 							<el-form-item label="" prop="'context' + index">
-								<el-input type="text" v-model="item.context" autocomplete="off" maxlength="50"> </el-input>
+								<el-input v-model="item.context" :autosize="{ minRows: 1, maxRows: 4 }" type="textarea" placeholder="Please input" />
 							</el-form-item>
 						</el-col>
 						<el-col :span="4">
@@ -54,11 +54,11 @@
 				</template>
 				<template v-else>
 					<el-form-item label="答案" prop="answer">
-						<el-input v-model="ruleForm.answer" />
+						<el-input v-model="ruleForm.answer" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="Please input" />
 					</el-form-item>
 				</template>
 				<el-form-item label="解析" prop="analysis">
-					<el-input v-model="ruleForm.analysis" />
+					<el-input v-model="ruleForm.analysis" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
@@ -72,6 +72,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
+import { useManageQStore } from '@/stores/managequestion';
 
 defineOptions({
 	name: 'ManualEntry',
@@ -117,7 +118,7 @@ interface RuleForm {
 const formSize = ref('default');
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive<RuleForm>({
-	qtype: '',
+	qtype: 'blanks',
 	stem: '',
 	option: '',
 	answer: '',
@@ -172,18 +173,21 @@ const restFormData = () => {
 	];
 };
 
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
-	await formEl.validate((valid, fields) => {
+	formEl.validate((valid, fields) => {
 		if (valid) {
-			console.log('submit!');
+			useManageQStore()
+				.ManualEntry(ruleForm)
+				.then(() => {
+					console.log('submitFormdddd submit!');
+					restFormData();
+				});
+			console.log('submitForm submit!');
 		} else {
-			console.log('error submit!', fields);
+			console.log('submitForm error submit!', fields);
 		}
 	});
-	console.log(ruleForm.optionConfig);
-
-	restFormData();
 };
 
 const resetForm = (formEl: FormInstance | undefined) => {
